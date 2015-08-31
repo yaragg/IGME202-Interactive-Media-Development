@@ -1,7 +1,7 @@
 class LightSwitch
 {
   private int x, y;
-  private int w=50, h=30;
+  private int w=40, h=20;
   private boolean on=true;
   
   LightSwitch(int x, int y)
@@ -12,7 +12,9 @@ class LightSwitch
   
   void display()
   {
-    fill(0, 0, 255);
+    fill(255, 176, 52);
+    rect(x-5, y-5, w+10, h+10);
+    fill(232, 87, 50);
     rect(x, y, w, h);
   }
   
@@ -28,5 +30,30 @@ class LightSwitch
     on = !on;
     if(on) background(200);
     else background(50);
+  }
+  
+  boolean isOn()
+  {
+    return on;
+  }
+  
+  int getX()
+  {
+    return x;
+  }
+  
+  int getY()
+  {
+    return y;
+  }
+  
+  int getWidth()
+  {
+    return w;
+  }
+  
+  int getHeight()
+  {
+    return h;
   }
 }
