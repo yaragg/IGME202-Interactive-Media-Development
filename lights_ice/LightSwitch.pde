@@ -1,8 +1,8 @@
 class LightSwitch
 {
-  int x, y;
-  int w=50, h=30;
-  boolean on=true;
+  private int x, y;
+  private int w=50, h=30;
+  private boolean on=true;
   
   LightSwitch(int x, int y)
   {
@@ -16,26 +16,13 @@ class LightSwitch
     rect(x, y, w, h);
   }
   
-  int getX()
+  boolean wasClicked()
   {
-    return x;
+    if(mouseX>=x && mouseX<=x+w && mouseY>=y && mouseY<=y+h)
+      return true;
+    else return false;
   }
-  
-  int getY()
-  {
-    return y;
-  }
-  
-  int getWidth()
-  {
-    return w;
-  }
-  
-  int getHeight()
-  {
-    return h;
-  }
-  
+   
   void flip()
   {
     on = !on;

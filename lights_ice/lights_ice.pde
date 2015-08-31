@@ -13,7 +13,7 @@ void draw()
 
 void mouseClicked()
 {
-  if(mouseX>=ls.getX() && mouseX<=ls.getX()+ls.getWidth() && mouseY>=ls.getY() && mouseY<=ls.getY()+ls.getHeight())
+  if(ls.wasClicked())
     ls.flip();
     
 }
