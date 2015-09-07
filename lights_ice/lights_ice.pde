@@ -1,3 +1,6 @@
+//Lights on, Lights off ICE
+//By Yara Grassi Gouffon
+
 LightSwitch ls;
 
 void setup()
