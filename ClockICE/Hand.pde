@@ -30,7 +30,11 @@ class Hand{
     //THE ARROW SHOULD BE CENTERED ON THE SCREEN
     //HINT:  USE ATAN2
     void followMouse(){
-
+      pushMatrix();
+      translate(width/2, height/2);
+      rotate(atan2(mouseY, mouseX));
+      shape(arrow);
+      popMatrix();
     }
     
     
