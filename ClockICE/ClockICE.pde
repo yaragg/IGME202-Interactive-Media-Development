@@ -25,8 +25,3 @@ void draw(){
     smallHand.spin();
     bigHand.followMouse();
 }
-
-void mousePressed()
-{
-  smallHand.arrow.rotate(1);
-}
