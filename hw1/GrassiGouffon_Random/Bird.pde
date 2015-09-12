@@ -11,11 +11,13 @@ class Bird
     this.y = y;
     this.c = c;
     this.step = step;
+    t = random(0, 255);
   }
   
   void display()
   {
     y = noise(t)*height;
+    x = noise(t+10)*width;
     t += step;
     fill(c);
     ellipse(x, y, 25, 25);
