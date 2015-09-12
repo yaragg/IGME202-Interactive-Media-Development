@@ -10,7 +10,7 @@ class Cloud
   //The speed refers to how fast it will cross the screen, so as to allow parallax
   Cloud(float minpos, float maxpos, float radius, float speed)
   {
-    int nParts = (int)random(13, 25); //How many parts will this cloud have?
+    int nParts = (int)random(17, 30); //How many parts will this cloud have?
     //Lastx and lasty are the (x,y) values of the latest cloud part that was created
     //Curx and cury are the new cloud part's current (x,y) values
     float lastx, lasty, curx, cury;
@@ -21,7 +21,7 @@ class Cloud
     //Creates the cloud shape
     noStroke();
     p = createShape(GROUP);
-    x = width;
+    x = width+100;
     lastx = x;
     y = random(minpos, maxpos+1);
     lasty = y;
@@ -35,14 +35,14 @@ class Cloud
     for(int i = 1; i<=nParts; i++)
     {
       //Uses a directed random algorithm to pick a x and y offset for each new part, relative to the last created part
-      if(random(0, 1)>0.6) curx = lastx + random(radius/3, 7*radius/10);
-      else curx = lastx - random(radius/3, 7*radius/10);
-      if(random(0, 1)>0.5) cury = lasty + random(0, radius/3);
-      else cury = lasty - random(0, radius/3);
+      if(random(0, 1)>0.6) curx = lastx + random(radius/4, radius/2);
+      else curx = lastx - random(radius/4, radius/2);
+      if(random(0, 1)>0.5) cury = lasty + random(0, radius/2);
+      else cury = lasty - random(0, radius/2);
       p.addChild(createShape(ELLIPSE, curx, cury, radius, radius));
       p.getChild(i).setFill(color(255, 255, 255, 60));
-      //lastx = curx;
-      //lasty = cury;
+      lastx = curx;
+      lasty = cury;
     }
     //p.setFill(255);
     //p.setTint(50);
