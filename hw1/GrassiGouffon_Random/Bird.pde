@@ -2,7 +2,7 @@ class Bird
 {
   float x, y;
   color c;
-  float t = 0.0; //Where is it in the Perlin pattern
+  float t = 0.0; //Where it is in the Perlin pattern
   float step; //How much to skip between each Perlin call 
   
   Bird(float x, float y, color c, float step)

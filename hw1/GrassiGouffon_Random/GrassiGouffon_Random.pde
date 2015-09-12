@@ -1,50 +1,36 @@
-float timestep = 0.005; //How much to increase the t variable for the Perlin noise function
-float xoff = 0.0;
-float t = 0.0;
-float ely = 0;
-Bird a, b;
-float mountainAtime = 0.0, mountainBtime = 100.0;
-float noiseScale = 0.01;
 
-ArrayList<Cloud> cloud = new ArrayList<Cloud>();
+Bird a, b, c;
+float mountainAtime = 0.0, mountainBtime = 100.0;
+
+ArrayList<Cloud> clouds = new ArrayList<Cloud>();
 
 void setup()
 {
   size(500, 500);
   a = new Bird(200, 200, color(255, 0, 0), 0.005);
   b = new Bird(300, 100, color(0, 0, 180), 0.005);
+  c = new Bird(500, 400, color(180, 0, 180), 0.005);
   //cloud = new Cloud[10];
-  for(int i=0; i<10; i++) cloud.add(new Cloud (0, height, random(25, 100)));
+  //for(int i=0; i<10; i++) cloud.add(new Cloud (0, height, random(25, 100), 3));
 }
 
 void drawBackground()
 {
   drawSky();
-  mountainAtime = drawMountain(0.005, 0.01, height/3, 0, mountainAtime);
-  fill(color(0, 150, 0));
+  mountainAtime = drawMountain(0.005, 0.007, 4*height/9, 0, mountainAtime);
+  fill(color(98, 222, 75));
   rect(0, height/3, width, 2*height/3);
 }
 
 void drawForeground()
 {
-  mountainBtime = drawMountain(0.005, 0.02, height, 2*height/3, mountainBtime);
+  mountainBtime = drawMountain(0.005, 0.022, height, 3*height/9, mountainBtime);
 }
 
 void drawSky()
 {
-  //float n;
   fill(color(129, 194, 255));
   rect(0, 0, width, height/3);
-  
-  //for (int y = 0; y < height; y++) 
-  //{
-  //  for (int x = 0; x < width ; x++) 
-  //  {
-  //    n = noise(x*noiseScale, y*noiseScale);
-  //    stroke(color(90, 50, n*255));
-  //    point(x, y);
-  //  }
-  //}
 }
 
 float drawMountain(float xstep, float speed, float base, float top, float mt)
@@ -54,7 +40,8 @@ float drawMountain(float xstep, float speed, float base, float top, float mt)
   float max = base;
   float min = top;
   noStroke();
-  fill(180, 180, 0);
+  //fill(180, 180, 0);
+  fill(118, 156, 52);
   beginShape();
   for (int i = 0; i < width; i++) 
   {
@@ -73,12 +60,24 @@ float drawMountain(float xstep, float speed, float base, float top, float mt)
 void draw()
 {
   background(180);
-  //drawMountain();
   drawBackground();
   a.display();
   b.display();
+  c.display();
   drawForeground();
-  for(int i=0; i<10; i++) cloud.get(i).display();
+  for(int i=0; i<clouds.size(); i++) clouds.get(i).display();
   
-  
+  if(frameCount%40==0)
+  {
+    if(random(0, 1)<0.4)
+    {
+      float r = random(0, 1);
+      if(r<0.3)
+        clouds.add(new Cloud (2*height/3, height, random(80, 120), 7));
+      else if(r<0.6)
+        clouds.add(new Cloud (height/3, 2*height/3, random(50, 60), 3));
+      else
+        clouds.add(new Cloud (0, height/3, random(25, 40), 2));
+    }
+  }
 }
