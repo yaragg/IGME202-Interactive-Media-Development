@@ -1,6 +1,8 @@
 Bird a, b, c;
 float mountainAtime = 0.0, mountainBtime = 100.0;
 
+PImage body, wing;
+
 ArrayList<Cloud> clouds = new ArrayList<Cloud>();
 
 void setup()
@@ -9,6 +11,8 @@ void setup()
   a = new Bird(200, 200, color(255, 0, 0), 0.005);
   b = new Bird(300, 100, color(0, 0, 180), 0.005);
   c = new Bird(500, 400, color(180, 0, 180), 0.005);
+  body = loadImage("body.png");
+  wing = loadImage("wing.png");
 }
 
 void drawBackground()
