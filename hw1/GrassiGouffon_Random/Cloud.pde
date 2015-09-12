@@ -34,7 +34,8 @@ class Cloud
     //Generates the rest of the cloud
     for(int i = 1; i<=nParts; i++)
     {
-      //Uses a directed random algorithm to pick a x and y offset for each new part, relative to the last created part
+      //Uses a directed random algorithm to pick a x and y offset for each new part, relative to the last created part.
+      //This matters because it favors the cloud "expanding" rather than going back and making itself more compact but thicker
       if(random(0, 1)>0.6) curx = lastx + random(radius/4, radius/2);
       else curx = lastx - random(radius/4, radius/2);
       if(random(0, 1)>0.5) cury = lasty + random(0, radius/2);
@@ -44,8 +45,6 @@ class Cloud
       lastx = curx;
       lasty = cury;
     }
-    //p.setFill(255);
-    //p.setTint(50);
   }
   
   void display()
