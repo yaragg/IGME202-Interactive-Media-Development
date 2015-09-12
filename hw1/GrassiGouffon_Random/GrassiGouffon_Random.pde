@@ -6,11 +6,15 @@ Bird a, b;
 float mountainAtime = 0.0, mountainBtime = 100.0;
 float noiseScale = 0.01;
 
+ArrayList<Cloud> cloud = new ArrayList<Cloud>();
+
 void setup()
 {
   size(500, 500);
   a = new Bird(200, 200, color(255, 0, 0), 0.005);
   b = new Bird(300, 100, color(0, 0, 180), 0.005);
+  //cloud = new Cloud[10];
+  for(int i=0; i<10; i++) cloud.add(new Cloud (0, height, random(25, 100)));
 }
 
 void drawBackground()
@@ -74,4 +78,7 @@ void draw()
   a.display();
   b.display();
   drawForeground();
+  for(int i=0; i<10; i++) cloud.get(i).display();
+  
+  
 }
