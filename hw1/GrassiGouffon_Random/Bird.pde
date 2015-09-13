@@ -42,11 +42,8 @@ class Bird
     image(body, 0, 0, 0.66*body.width, 0.66*body.height);
     
     translate(0.47*body.width/2, 0.4*wing.height/2);
-    println(y-prevy);
-    //rotate(rotation);
+
     scale(1, scale);
-    //rotate(rotation);
-    //image(wing, x+0.5*body.width/2, y-0.92*wing.height/2, 0.66*wing.width, 0.66*wing.height);
     image(wing, 0, 0, 0.66*wing.width, 0.66*wing.height);
     popMatrix();
     scale += scaleInc;

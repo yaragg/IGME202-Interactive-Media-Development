@@ -1,9 +1,17 @@
+import ddf.minim.*;
+
 Bird a, b, c;
 float mountainAtime = 0.0, mountainBtime = 100.0;
 
 PImage body, wing;
 
 ArrayList<Cloud> clouds = new ArrayList<Cloud>();
+
+AudioPlayer audio;
+AudioPlayer sfx;
+Minim minim;
+
+float nextSfx;
 
 void setup()
 {
@@ -13,6 +21,20 @@ void setup()
   c = new Bird(500, 400, color(180, 0, 180), 0.005);
   body = loadImage("body.png");
   wing = loadImage("wing.png");
+  minim = new Minim(this);
+  audio = minim.loadFile("Wings.mp3", 2048);
+  audio.setGain(-13);
+  sfx = minim.loadFile("Eaglet Bird 2.mp3", 2048);
+  sfx.setGain(-11);
+  audio.play();
+  nextSfx = random(40, 200);
+}
+
+void stop()
+{
+  audio.close();
+  minim.stop();
+  super.stop();
 }
 
 void drawBackground()
@@ -63,6 +85,15 @@ float drawMountain(float xstep, float speed, float base, float top, float mt)
 
 void draw()
 {
+  if(frameCount>=nextSfx)
+  {
+    if(!sfx.isPlaying()) 
+    {
+      sfx.rewind();
+      sfx.play();
+    }
+    nextSfx += random(300, 800);
+  }
   background(180);
   drawBackground();
   a.display();
