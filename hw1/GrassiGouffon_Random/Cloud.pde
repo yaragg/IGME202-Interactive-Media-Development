@@ -3,7 +3,7 @@ class Cloud
   float x, y;
   float radius;
   float speed;
-  float age = 0, maxAge;
+  float age = 0, maxAge; //Lets us know when the cloud can be safely removed. Check removeOldClouds() in the main class for more details
   PShape p;
   
   //Generates a cloud to the right of the screen, with its y position randomly defined between minpos and maxpos.
@@ -16,12 +16,12 @@ class Cloud
     float lastx, lasty, curx, cury;
     this.speed = speed;
     //Estimates how long the cloud will need to cross the screen and disappear, after which it can be destroyed
-    this.maxAge = width/speed+30;
+    this.maxAge = 2*width/speed+50;
     
     //Creates the cloud shape
     noStroke();
     p = createShape(GROUP);
-    x = width+100;
+    x = 2*width; //Makes the cloud purposely spawn off screen because otherwise clouds "long" clouds look like they pop up in the middle of the screen 
     lastx = x;
     y = random(minpos, maxpos+1);
     lasty = y;
@@ -52,9 +52,5 @@ class Cloud
     p.translate(-speed, 0);
     shape(p);
     age++;
-    //Kill the cloud if it's old enough so as to free up memory
-    //(Assuming by then the cloud will already have disappeared from the screen)
-    if(age>=maxAge) clouds.remove(clouds.indexOf(this));
-   
   }
 }

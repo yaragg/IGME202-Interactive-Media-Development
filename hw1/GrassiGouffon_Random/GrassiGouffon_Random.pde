@@ -4,7 +4,7 @@ Bird a, b, c;
 float mountainAtime = 0.0, mountainBtime = 100.0; //Where each mountain is relative to the Perlin noise pattern.
 //Mountain A is the one in the back, B is the one closest to the viewer
 
-PImage body, wing;
+PImage body, wing, tree;
 
 ArrayList<Cloud> clouds = new ArrayList<Cloud>();
 
@@ -24,6 +24,7 @@ void setup()
   c = new Bird(500, 400, color(180, 0, 180), 0.005);
   body = loadImage("body.png");
   wing = loadImage("wing.png");
+  tree = loadImage("tree.png");
   
   //Creates audio objects
   minim = new Minim(this);
@@ -31,7 +32,7 @@ void setup()
   audio.setGain(-13);
   sfx = minim.loadFile("Eaglet Bird 2.mp3", 2048);
   sfx.setGain(-11);
-  audio.play();
+  audio.loop();
   nextSfx = random(40, 200); //Randomly decides when to first play the sfx
 }
 
@@ -89,6 +90,8 @@ float drawMountain(float xstep, float speed, float base, float top, float mt)
   return mt; //Returns mt so it can be saved and used for the next call
 }
 
+
+
 void draw()
 {
   if(frameCount>=nextSfx) //Is it time to play the sfx?
@@ -108,9 +111,26 @@ void draw()
   c.display();
   drawForeground();
   for(int i=0; i<clouds.size(); i++) clouds.get(i).display(); //Displays all clouds
+
+  //Every 100 frames, checks for any clouds that need to be destroyed
+  if(frameCount%100==0) removeOldClouds(); 
   
   cloudGeneration();
 
+}
+
+void removeOldClouds()
+{
+  for(int i=0; i<clouds.size(); i++)
+  {
+    //If the cloud has passed its maximum age, chances are it's already disappeared off screen so it can be safely removed
+    //Since no one is pointing to the cloud anymore, the garbage collector should eventually free up the memory
+    if(clouds.get(i).age>=clouds.get(i).maxAge) 
+    {
+      clouds.remove(i);
+      i--;
+    }
+  }
 }
 
 void cloudGeneration()
