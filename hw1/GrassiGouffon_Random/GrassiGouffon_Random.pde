@@ -7,6 +7,7 @@ float mountainAtime = 0.0, mountainBtime = 100.0; //Where each mountain is relat
 PImage body, wing, tree;
 
 ArrayList<Cloud> clouds = new ArrayList<Cloud>();
+ArrayList<Tree> trees = new ArrayList<Tree>();
 
 AudioPlayer audio; //Plays the background music
 AudioPlayer sfx; //Plays the bird call
@@ -25,6 +26,7 @@ void setup()
   body = loadImage("body.png");
   wing = loadImage("wing.png");
   tree = loadImage("tree.png");
+  treeGeneration();
   
   //Creates audio objects
   minim = new Minim(this);
@@ -47,9 +49,9 @@ void stop()
 void drawBackground()
 {
   drawSky();
-  mountainAtime = drawMountain(0.005, 0.007, 4*height/9, 0, mountainAtime);
   fill(color(98, 222, 75));
-  rect(0, height/3, width, 2*height/3);
+  rect(0, height/3, width, height);
+  mountainAtime = drawMountain(0.005, 0.007, height/3, 0, mountainAtime);
 }
 
 void drawForeground()
@@ -106,6 +108,7 @@ void draw()
   
   background(180);
   drawBackground();
+  drawTrees();
   a.display();
   b.display();
   c.display();
@@ -113,10 +116,31 @@ void draw()
   for(int i=0; i<clouds.size(); i++) clouds.get(i).display(); //Displays all clouds
 
   //Every 100 frames, checks for any clouds that need to be destroyed
-  if(frameCount%100==0) removeOldClouds(); 
+  if(frameCount%100==0)
+  {
+    removeOldClouds();
+    removeOldTrees();
+  }
   
-  cloudGeneration();
+  //Every 40 frames, decides whether to generate a new cloud
+  if(frameCount%40==0) cloudGeneration();
+  
+  if(frameCount%200==0) treeGeneration();
 
+}
+
+void treeGeneration()
+{
+  float n = random(1, 11);
+  for(int i=0; i<n; i++) trees.add(new Tree());
+}
+
+void drawTrees()
+{
+  for(int i=0; i<trees.size(); i++)
+  {
+    trees.get(i).display();
+  }
 }
 
 void removeOldClouds()
@@ -133,21 +157,30 @@ void removeOldClouds()
   }
 }
 
+void removeOldTrees() //Same as removeOldClouds, but for trees
+{
+  for(int i=0; i<trees.size(); i++)
+  {
+    if(trees.get(i).age>=trees.get(i).maxAge) 
+    {
+      trees.remove(i);
+      i--;
+    }
+  }
+}
+
 void cloudGeneration()
 {
-  if(frameCount%40==0) //Every 40 frames, decides whether to generate a new cloud
+  if(random(0, 1)<0.4)
   {
-    if(random(0, 1)<0.4)
-    {
-      //Decides what kind of cloud it will be:  
-      //One that is close to the viewer (so a larger cloud that passes by quickly due to parallax), a medium one, or a small one far away that moves by slower
-      float r = random(0, 1);
-      if(r<0.3) //Adds to the "foreground" region - big clouds on the lower part of the screen with higher speed
-        clouds.add(new Cloud (2*height/3, height, random(80, 120), 7));
-      else if(r<0.6) //Adds to the middle part
-        clouds.add(new Cloud (height/3, 2*height/3, random(50, 60), 3));
-      else //Adds to the background far away
-        clouds.add(new Cloud (0, height/3, random(25, 40), 2));
-    }
+    //Decides what kind of cloud it will be:  
+    //One that is close to the viewer (so a larger cloud that passes by quickly due to parallax), a medium one, or a small one far away that moves by slower
+    float r = random(0, 1);
+    if(r<0.3) //Adds to the "foreground" region - big clouds on the lower part of the screen with higher speed
+      clouds.add(new Cloud (2*height/3, height, random(80, 120), 7));
+    else if(r<0.6) //Adds to the middle part
+      clouds.add(new Cloud (height/3, 2*height/3, random(50, 60), 3));
+    else //Adds to the background far away
+      clouds.add(new Cloud (0, height/3, random(25, 40), 2));
   }
 }
