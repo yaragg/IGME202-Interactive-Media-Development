@@ -3,6 +3,7 @@ class Circle implements CollisionDetector
   float x, y, radius;
   PShape p;
   
+  
   Circle(float x, float y, float radius)
   {
     this.x = x;
@@ -26,6 +27,11 @@ class Circle implements CollisionDetector
   
   void display()
   {
+    if(this != cursor)
+    {
+      if(isAHit(cursor)) ((Circle) cursor).p.setFill(#FF0000);
+      else ((Circle) cursor).p.setFill(#DDFFDD);
+    }
     shape(p);
   }
   
