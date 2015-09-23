@@ -9,13 +9,14 @@ class Circle implements CollisionDetector
     this.x = x;
     this.y = y;
     this.radius = radius;
-    p = createShape(ELLIPSE, x, y, radius, radius);
+    println(x, y, radius);
+    p = createShape(ELLIPSE, 0, 0, 2*radius, 2*radius);
   }
   
   boolean isAHit(Circle circle)
   {
     if(pow(circle.x - this.x, 2) + pow(circle.y - this.y, 2) <= pow(circle.radius + this.radius, 2))
-      return true;
+        return true;
     else return false;
   }
   
@@ -29,10 +30,9 @@ class Circle implements CollisionDetector
   {
     if(this != cursor)
     {
-      if(isAHit(cursor)) ((Circle) cursor).p.setFill(#FF0000);
-      else ((Circle) cursor).p.setFill(#DDFFDD);
+      if(isAHit(cursor)) cursorCircle.p.setFill(#FF0000);
     }
-    shape(p);
+    shape(p, x, y);
   }
   
   void setPosition(float x, float y)
