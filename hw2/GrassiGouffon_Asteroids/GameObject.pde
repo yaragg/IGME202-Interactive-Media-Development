@@ -26,10 +26,19 @@ abstract class GameObject
     //set direction
     acceleration = PVector.mult(direction, accelRate);
     velocity.add(acceleration);
-    velocity.mult(0.99);
+    if(this instanceof Ship) velocity.mult(0.99);
     velocity.limit(maxSpeed);
     position.add(velocity);
     acceleration.set(0, 0);
+    wrapScreen();
+  }
+  
+  void wrapScreen()
+  {
+    if(position.x>width) position.x = 0;
+    else if(position.x<0) position.x = width;
+    if(position.y>height) position.y = 0;
+    else if(position.y<0) position.y = height;
   }
 
 }

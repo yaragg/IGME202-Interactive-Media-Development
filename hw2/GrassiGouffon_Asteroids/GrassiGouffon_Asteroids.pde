@@ -1,10 +1,12 @@
 Ship player;
+ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 int turning = 0; //0 = not turning, 1 = left, 2 = right
 boolean accelerating = false;
 void setup()
 {
   size(600, 600);
   player = new Ship();
+  asteroids.add(new Asteroid());
   rectMode(CENTER);
 }
 
@@ -39,6 +41,12 @@ void draw()
   
   player.update();
   player.display();
+  
+  for(int i=0; i<asteroids.size(); i++)
+  {
+    asteroids.get(i).update();
+    asteroids.get(i).display();
+  }
 }
 
 void keyPressed()
