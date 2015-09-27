@@ -18,6 +18,7 @@ class Bullet extends GameObject
       {
         fill(#0000FF);
         destroy = true;
+        asteroids.get(i).destroy = true;
       }
     }
   }

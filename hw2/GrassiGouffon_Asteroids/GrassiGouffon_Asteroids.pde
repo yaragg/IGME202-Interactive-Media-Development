@@ -1,46 +1,52 @@
 Ship player;
-ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
-ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+ArrayList<Asteroid> asteroids;
+ArrayList<Bullet> bullets;
 int turning = 0; //0 = not turning, 1 = left, 2 = right
 boolean accelerating = false;
-int maxBulletsOnScreen = 5;
+static final int maxBulletsOnScreen = 5;
+static final int maxAsteroidsOnScreen = 7;
+boolean playing;
 
 void setup()
 {
   size(600, 600);
-  player = new Ship();
-  asteroids.add(new Asteroid());
   rectMode(CENTER);
+  startGame();
+}
+
+void startGame()
+{
+  player = new Ship();
+  asteroids = new ArrayList<Asteroid>();
+  bullets = new ArrayList<Bullet>();
+  turning = 0;
+  accelerating = false;
+  playing = true;
+  fill(#FFFFFF);
 }
 
 void draw()
 {
-  background(180);
+ if(playing) gameLoop();
+ else
+ {
+   textSize(30);
+   fill(#000000);
+   text("Game over. Continue? (y/n)", 60, height/2);
+   if(key == 'y' || key == 'Y')
+     startGame();
+   else if(key == 'n' || key == 'N') exit();
+ }
+}
+
+void gameLoop()
+{
+    background(180);
   
-  //if(keyPressed && turning == 1) player.directionAngle += 1;
-  //else if(keyPressed && turning == 2) player.directionAngle -= 1;
-  
-  //if(keyPressed && keyCode == LEFT) player.direction.rotate(0.1);
-  //else if(keyPressed && keyCode == RIGHT) player.direction.rotate(-0.1);
-  ////player.accelRate = 0.1;
-  //if(keyPressed && keyCode == UP) player.accelRate = 0.5;
-  //else player.accelRate = 0.2;
-  //else player.accelRate = 0;
-  
-  //if(turning == 1) player.direction.rotate(0.1);
-  //else if(turning == 2) player.direction.rotate(-0.1);
   if(turning == 1) player.directionAngle += 0.1;
   else if(turning == 2) player.directionAngle -= 0.1;
-  
-  //player.accelRate = 0.1;
   if(accelerating) player.accelRate = 0.2;
   else player.accelRate = 0;
-  //if(accelerating)
-  //{
-  // player.acceleration.x = player.accelRate * sin(player.direction.heading());
-  // player.acceleration.y = -player.accelRate*cos(player.direction.heading());
-  //}
-  //else player.accelRate = 0.2;
   
   for(int i=0; i<asteroids.size(); i++)
   {
@@ -58,6 +64,9 @@ void draw()
   player.display();
   
   destroyBullets();
+  destroyAsteroids();
+  
+  if(frameCount%70 == 0 && random(0, 2) < 0.7 && asteroids.size()<maxAsteroidsOnScreen) asteroids.add(new Asteroid());
 }
 
 void destroyBullets()
@@ -67,6 +76,18 @@ void destroyBullets()
     if(bullets.get(i).age > Bullet.maxBulletAge || bullets.get(i).destroy == true)
     {
       bullets.remove(i);
+      i--;
+    }
+  }
+}
+
+void destroyAsteroids()
+{
+  for(int i=0; i<asteroids.size(); i++)
+  {
+    if(asteroids.get(i).destroy == true)
+    {
+      asteroids.remove(i);
       i--;
     }
   }

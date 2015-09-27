@@ -4,7 +4,7 @@ class Ship extends GameObject
   Ship()
   {
     //super(width/2, height/2, HALF_PI, 3, 5);
-    super(width/2, 0, HALF_PI, 0, 5);
+    super(width/2, height/2, HALF_PI, 0, 5);
     radius = 10;
   }
   
@@ -13,7 +13,10 @@ class Ship extends GameObject
     for(int i=0; i<asteroids.size(); i++)
     {
       if(isAHit(this, asteroids.get(i)))
+      {
         fill(#FF0000);
+        playing = false;
+      }
     }
   }
   
