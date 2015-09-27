@@ -1,7 +1,10 @@
 Ship player;
 ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
+ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 int turning = 0; //0 = not turning, 1 = left, 2 = right
 boolean accelerating = false;
+int maxBulletsOnScreen = 5;
+
 void setup()
 {
   size(600, 600);
@@ -45,8 +48,28 @@ void draw()
     asteroids.get(i).display();
   }
   
+  for(int i=0; i<bullets.size(); i++)
+  {
+    bullets.get(i).update();
+    bullets.get(i).display();
+  }
+  
   player.update();
   player.display();
+  
+  destroyBullets();
+}
+
+void destroyBullets()
+{
+  for(int i=0; i<bullets.size(); i++)
+  {
+    if(bullets.get(i).age > Bullet.maxBulletAge || bullets.get(i).destroy == true)
+    {
+      bullets.remove(i);
+      i--;
+    }
+  }
 }
 
 void keyPressed()
@@ -54,6 +77,7 @@ void keyPressed()
  if(keyCode == RIGHT) turning = 2;
  else if(keyCode == LEFT) turning = 1;
  else if(keyCode == UP) accelerating = true;
+ if(key == ' ') player.fire();
 }
 
 void keyReleased()

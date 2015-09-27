@@ -3,7 +3,7 @@ class Asteroid extends GameObject
   Asteroid()
   {
     super(0, 0, HALF_PI, 0.03, 1);
-    radius = 50;
+    radius = 25;
     int side = (int) random(1, 5); //Decides which side of the screen the asteroid will come from
     //1 = top, 2 = right, 3 = bottom, 4 = left
     println(side);
@@ -43,7 +43,7 @@ class Asteroid extends GameObject
   
   void display()
   {
-    ellipse(position.x, position.y, radius, radius);
+    ellipse(position.x, position.y, 2*radius, 2*radius);
   }
   
 }
