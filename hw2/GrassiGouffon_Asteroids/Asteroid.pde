@@ -1,6 +1,5 @@
 class Asteroid extends GameObject
 {
-  float radius;
   Asteroid()
   {
     super(0, 0, HALF_PI, 0.03, 1);

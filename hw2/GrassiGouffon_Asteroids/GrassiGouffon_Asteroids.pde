@@ -39,14 +39,14 @@ void draw()
   //}
   //else player.accelRate = 0.2;
   
-  player.update();
-  player.display();
-  
   for(int i=0; i<asteroids.size(); i++)
   {
     asteroids.get(i).update();
     asteroids.get(i).display();
   }
+  
+  player.update();
+  player.display();
 }
 
 void keyPressed()

@@ -1,7 +1,7 @@
 abstract class GameObject
 {
   PVector position, velocity, acceleration, direction;
-  float accelRate, maxSpeed;
+  float accelRate, maxSpeed, radius;
   abstract void checkCollisions();
   abstract void update();
   abstract void display();
@@ -16,9 +16,11 @@ abstract class GameObject
     maxSpeed = ms;
   }
   
-  boolean isAHit() //Uses bounding circles to check if two elements have collided
+  boolean isAHit(GameObject a, GameObject b) //Uses bounding circles to check if two elements have collided
   {
-    return false;
+    if(pow(a.position.x - b.position.x, 2) + pow(a.position.y - b.position.y, 2) <= pow(a.radius + b.radius, 2))
+        return true;
+    else return false;
   }
   
   void move()
