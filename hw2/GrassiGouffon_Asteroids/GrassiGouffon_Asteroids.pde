@@ -5,6 +5,7 @@ void setup()
 {
   size(600, 600);
   player = new Ship();
+  rectMode(CENTER);
 }
 
 void draw()
@@ -21,8 +22,11 @@ void draw()
   //else player.accelRate = 0.2;
   //else player.accelRate = 0;
   
-  if(turning == 1) player.direction.rotate(0.1);
-  else if(turning == 2) player.direction.rotate(-0.1);
+  //if(turning == 1) player.direction.rotate(0.1);
+  //else if(turning == 2) player.direction.rotate(-0.1);
+  if(turning == 1) player.directionAngle += 0.1;
+  else if(turning == 2) player.directionAngle -= 0.1;
+  
   //player.accelRate = 0.1;
   if(accelerating) player.accelRate = 0.2;
   else player.accelRate = 0;

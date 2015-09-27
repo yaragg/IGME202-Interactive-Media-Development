@@ -13,13 +13,18 @@ class Ship extends GameObject
   
   void update()
   {
-    //direction = PVector.fromAngle(directionAngle);
+    direction = PVector.fromAngle(directionAngle);
     direction.normalize();
     super.move();
   }
   
   void display()
   {
-    rect(position.x, position.y, 10, 20);
+    pushMatrix();
+    translate(position.x, position.y);
+    rotate(directionAngle+HALF_PI);
+    //rect(position.x, position.y, 10, 20);
+    rect(0, 0, 10, 20);
+    popMatrix();
   }
 }
