@@ -6,7 +6,7 @@ class Bullet extends GameObject
   Bullet()
   {
     super(player.position.x, player.position.y, player.directionAngle, 0.5, 3);
-    radius = 3;
+    radius = 4;
     age = 0;
   }
   
@@ -19,6 +19,12 @@ class Bullet extends GameObject
         fill(#0000FF);
         destroy = true;
         asteroids.get(i).destroy = true;
+        if(!asteroids.get(i).mini)
+        {
+          asteroids.add(new Asteroid(asteroids.get(i).position, asteroids.get(i).direction.heading()));
+          asteroids.add(new Asteroid(PVector.add(asteroids.get(i).position, new PVector(20, 20)), PI+asteroids.get(i).direction.heading()));
+        }
+        
       }
     }
   }

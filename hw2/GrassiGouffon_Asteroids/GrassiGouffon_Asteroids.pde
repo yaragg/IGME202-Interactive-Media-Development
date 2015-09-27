@@ -23,6 +23,7 @@ void startGame()
   accelerating = false;
   playing = true;
   fill(#FFFFFF);
+  asteroids.add(new Asteroid());
 }
 
 void draw()
@@ -32,7 +33,7 @@ void draw()
  {
    textSize(30);
    fill(#000000);
-   text("Game over. Continue? (y/n)", 60, height/2);
+   text("Game over. Continue? (y/n)", 80, height/2);
    if(key == 'y' || key == 'Y')
      startGame();
    else if(key == 'n' || key == 'N') exit();

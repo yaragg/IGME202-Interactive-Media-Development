@@ -33,6 +33,14 @@ class Asteroid extends GameObject
     println(position.x, position.y);
   } 
   
+  Asteroid(PVector start, float directionAngle)
+  {
+    super(start.x, start.y, directionAngle, 0.03, 1);
+    radius = 10;
+    entering = false;
+    mini = true;
+  }
+  
   void wrapScreen()
   {
     if(!entering) super.wrapScreen();
