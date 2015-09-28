@@ -21,8 +21,8 @@ class Bullet extends GameObject
         asteroids.get(i).destroy = true;
         if(!asteroids.get(i).mini)
         {
-          asteroids.add(new Asteroid(asteroids.get(i).position, asteroids.get(i).direction.heading()));
-          asteroids.add(new Asteroid(PVector.add(asteroids.get(i).position, new PVector(20, 20)), PI+asteroids.get(i).direction.heading()));
+          asteroids.add(new Asteroid(asteroids.get(i).position, asteroids.get(i).direction.heading(), asteroids.get(i).asteroidType));
+          asteroids.add(new Asteroid(PVector.add(asteroids.get(i).position, new PVector(20, 20)), PI+asteroids.get(i).direction.heading(), asteroids.get(i).asteroidType));
         }
         
       }
@@ -40,7 +40,12 @@ class Bullet extends GameObject
   void display()
   {
     checkCollisions();
-    rect(position.x, position.y, 2*radius, 2*radius);
+    //rect(position.x, position.y, 2*radius, 2*radius);
+    pushMatrix();
+    translate(position.x, position.y);
+    rotate(direction.heading()-HALF_PI);
+    image(bullet_image, 0, 0, 32, 32);
+    popMatrix();
     fill(#FFFFFF);
   }
 }

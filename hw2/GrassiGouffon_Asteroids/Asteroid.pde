@@ -3,13 +3,14 @@ class Asteroid extends GameObject
   boolean destroy = false;
   boolean entering = true;
   boolean mini = false;
+  int asteroidType;
   Asteroid()
   {
     super(0, 0, HALF_PI, 0.03, 1);
     radius = 25;
     int side = (int) random(1, 5); //Decides which side of the screen the asteroid will come from
     //1 = top, 2 = right, 3 = bottom, 4 = left
-    println(side);
+    
     if(side == 1)
     {
       position.y = -2*radius;
@@ -30,15 +31,17 @@ class Asteroid extends GameObject
       position.x = -2*radius;
       position.y = random(0, height);
     }
-    println(position.x, position.y);
+    
+    asteroidType = (int) random(0, 4);
   } 
   
-  Asteroid(PVector start, float directionAngle)
+  Asteroid(PVector start, float directionAngle, int type)
   {
     super(start.x, start.y, directionAngle, 0.03, 1);
     radius = 10;
     entering = false;
     mini = true;
+    asteroidType = type;
   }
   
   void wrapScreen()
@@ -60,7 +63,8 @@ class Asteroid extends GameObject
   
   void display()
   {
-    ellipse(position.x, position.y, 2*radius, 2*radius);
+    //ellipse(position.x, position.y, 2*radius, 2*radius);
+    image(asteroid_images[asteroidType][int(mini)], position.x, position.y, asteroid_images[asteroidType][int(mini)].width, asteroid_images[asteroidType][int(mini)].height);
   }
   
 }
