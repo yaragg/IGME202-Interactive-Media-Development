@@ -1,6 +1,6 @@
 class Bullet extends GameObject
 {
-  static final int maxBulletAge = 150;
+  static final int maxBulletAge = 150; //How long a bullet can stay on the screen before vanishing. This allows for the bullets to wrap too, instead of destroying them when they go offscreen
   int age;
   boolean destroy = false;
   Bullet()
@@ -10,17 +10,17 @@ class Bullet extends GameObject
     age = 0;
   }
   
-  void checkCollisions()
+  void checkCollisions() //Checks for collisions with asteroids
   {
     for(int i=0; i<asteroids.size(); i++)
     {
       if(isAHit(this, asteroids.get(i)))
       {
-        fill(#0000FF);
-        destroy = true;
-        asteroids.get(i).destroy = true;
-        if(!asteroids.get(i).mini)
+        destroy = true; //Mark bullet for destruction
+        asteroids.get(i).destroy = true; //Mark asteroid for destruction
+        if(!asteroids.get(i).mini) //If asteroid is big, divide in two
         {
+          //Spawns the two smaller asteroids with a certain distance between them
           asteroids.add(new Asteroid(asteroids.get(i).position, asteroids.get(i).direction.heading(), asteroids.get(i).asteroidType));
           asteroids.add(new Asteroid(PVector.add(asteroids.get(i).position, new PVector(20, 20)), PI+asteroids.get(i).direction.heading(), asteroids.get(i).asteroidType));
         }
@@ -31,7 +31,6 @@ class Bullet extends GameObject
   
   void update()
   {
-    //direction = PVector.fromAngle(directionAngle);
     direction.normalize();
     super.move();
     age++;
@@ -39,13 +38,12 @@ class Bullet extends GameObject
   
   void display()
   {
-    checkCollisions();
-    //rect(position.x, position.y, 2*radius, 2*radius);
+    checkCollisions(); 
+    //Displays the rotated bullet image
     pushMatrix();
     translate(position.x, position.y);
     rotate(direction.heading()-HALF_PI);
     image(bullet_image, 0, 0, 32, 32);
     popMatrix();
-    fill(#FFFFFF);
   }
 }

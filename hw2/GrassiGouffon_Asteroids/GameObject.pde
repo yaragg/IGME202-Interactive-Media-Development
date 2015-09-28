@@ -1,3 +1,4 @@
+//Asteroids, Bullets and Ships all inherit this class. This allows me to use a single collision detection method for all three, as well as centralize vector movement
 abstract class GameObject
 {
   PVector position, velocity, acceleration, direction;
@@ -6,7 +7,7 @@ abstract class GameObject
   abstract void update();
   abstract void display();
   
-  GameObject(float x, float y, float dir, float a, float ms)
+  GameObject(float x, float y, float dir, float a, float ms) //Generic constructor for the subclasses to use
   {
     position = new PVector(x, y);
     velocity = new PVector(0, 0);
@@ -25,17 +26,17 @@ abstract class GameObject
   
   void move()
   {
-    //set direction
+    //Direction should be set by the subclass before calling this method
     acceleration = PVector.mult(direction, accelRate);
     velocity.add(acceleration);
-    if(this instanceof Ship) velocity.mult(0.99);
+    if(this instanceof Ship) velocity.mult(0.99); //Adds drag to player ship. Drag in vacuum? My Physics professor must be feeling sick now...
     velocity.limit(maxSpeed);
     position.add(velocity);
     acceleration.set(0, 0);
     wrapScreen();
   }
   
-  void wrapScreen()
+  void wrapScreen() //Checks if object is at the edge of the screen and wraps
   {
     if(position.x>width) position.x = 0;
     else if(position.x<0) position.x = width;
