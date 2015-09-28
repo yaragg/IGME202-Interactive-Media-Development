@@ -20,9 +20,16 @@ class Bullet extends GameObject
         asteroids.get(i).destroy = true; //Mark asteroid for destruction
         if(!asteroids.get(i).mini) //If asteroid is big, divide in two
         {
+          explosion_b.play();
+          explosion_b.rewind();
           //Spawns the two smaller asteroids with a certain distance between them
           asteroids.add(new Asteroid(asteroids.get(i).position, asteroids.get(i).direction.heading(), asteroids.get(i).asteroidType));
           asteroids.add(new Asteroid(PVector.add(asteroids.get(i).position, new PVector(20, 20)), PI+asteroids.get(i).direction.heading(), asteroids.get(i).asteroidType));
+        }
+        else
+        {
+          explosion_s.play();
+          explosion_s.rewind();
         }
         
       }

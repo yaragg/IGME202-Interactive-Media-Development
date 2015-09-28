@@ -1,3 +1,5 @@
+import ddf.minim.*;
+
 Ship player;
 ArrayList<Asteroid> asteroids;
 ArrayList<Bullet> bullets;
@@ -9,11 +11,26 @@ boolean playing;
 PImage asteroid_images[][] = new PImage[4][2];
 PImage bullet_image;
 PImage bg;
+Minim minim;
+AudioPlayer game_bgm;
+AudioPlayer shot_sfx;
+AudioPlayer explosion_b; //Big asteroid explosion
+AudioPlayer explosion_s; //Small asteroid explosion
+AudioPlayer ship_explosion;
 
 void setup()
 {
   size(600, 600);
   imageMode(CENTER);
+  
+  minim = new Minim(this);
+  game_bgm = minim.loadFile("8-Bit Bomber.mp3", 2048);
+  game_bgm.setGain(-15);
+  shot_sfx = minim.loadFile("shot.mp3", 2048);
+  shot_sfx.setGain(-4);
+  explosion_b = minim.loadFile("explosion_b.mp3", 2048);
+  explosion_s = minim.loadFile("explosion_s.mp3", 2048);
+  ship_explosion = minim.loadFile("ship_explosion.mp3", 2048);
   
   //Load background image
   bg = loadImage("background.jpg");
@@ -24,6 +41,7 @@ void setup()
     asteroid_images[i][1] = loadImage("asteroid_"+i+"_s.png");
   }
   bullet_image = loadImage("bullet.png"); 
+  game_bgm.loop();
   startGame();
 }
 
@@ -129,4 +147,12 @@ void keyReleased()
    accelerating = false;
    player.active_image = player.ship_normal;
  }
+}
+ 
+void stop()
+{
+  //Stops the audio
+  game_bgm.close();
+  minim.stop();
+  super.stop();
 }

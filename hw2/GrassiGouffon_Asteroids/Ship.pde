@@ -16,7 +16,11 @@ class Ship extends GameObject
     for(int i=0; i<asteroids.size(); i++)
     {
       if(isAHit(this, asteroids.get(i)))
+      {
+        ship_explosion.play();
+        ship_explosion.rewind();
         playing = false;
+      }
     }
   }
   
@@ -40,6 +44,10 @@ class Ship extends GameObject
   void fire()
   {
     if(bullets.size()<maxBulletsOnScreen) //Only allow player to shoot if the maximum number of bullets on screen hasn't been exceeded
+    {
+      shot_sfx.play();
+      shot_sfx.rewind();
       bullets.add(new Bullet());
+    }
   }
 }
