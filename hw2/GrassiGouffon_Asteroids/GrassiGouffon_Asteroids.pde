@@ -17,12 +17,16 @@ AudioPlayer shot_sfx;
 AudioPlayer explosion_b; //Big asteroid explosion
 AudioPlayer explosion_s; //Small asteroid explosion
 AudioPlayer ship_explosion;
+PImage title_images[] = new PImage[2];
+boolean title_screen = true;
+int displayed_title = 0;
 
 void setup()
 {
   size(600, 600);
   imageMode(CENTER);
   
+  //Load sounds
   minim = new Minim(this);
   game_bgm = minim.loadFile("8-Bit Bomber.mp3", 2048);
   game_bgm.setGain(-15);
@@ -31,6 +35,11 @@ void setup()
   explosion_b = minim.loadFile("explosion_b.mp3", 2048);
   explosion_s = minim.loadFile("explosion_s.mp3", 2048);
   ship_explosion = minim.loadFile("ship_explosion.mp3", 2048);
+  ship_explosion.setGain(-4);
+  
+  //Load main screen images
+  title_images[0] = loadImage("title_screen_no_message.jpg");
+  title_images[1] = loadImage("title_screen_with_message.jpg");
   
   //Load background image
   bg = loadImage("background.jpg");
@@ -56,11 +65,21 @@ void startGame()
   asteroids.add(new Asteroid()); //Add a single asteroid just so the player doesn't sit around waiting for the first one for too long
 }
 
+void title()
+{
+  background(title_images[displayed_title]);
+  if(frameCount%20 == 0) displayed_title = 1 - displayed_title;
+}
+
 void draw()
 {
- if(playing) gameLoop();
+ if(title_screen) title();
+ else if(playing) gameLoop();
  else //Game over
  {
+   background(bg);
+   for(int i=0; i<asteroids.size(); i++) asteroids.get(i).display();
+   player.displayExplosion();
    textSize(30);
    fill(#FFFFFF);
    text("Game over. Continue? (y/n)", 80, height/2);
@@ -125,6 +144,11 @@ void destroyAsteroids()
       i--;
     }
   }
+}
+
+void mouseClicked()
+{
+  title_screen = false;
 }
 
 void keyPressed() //Handles player input
