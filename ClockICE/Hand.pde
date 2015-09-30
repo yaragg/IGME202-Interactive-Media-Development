@@ -32,8 +32,8 @@ class Hand{
     void followMouse(){
       pushMatrix();
       translate(width/2, height/2);
-      rotate(atan2(mouseY, mouseX));
-      shape(arrow);
+      rotate(atan2(mouseY-height/2, mouseX-width/2));
+      shape(arrow, 0, -25); //Draws the arrow at (0, -25) to make it centered
       popMatrix();
     }
     
