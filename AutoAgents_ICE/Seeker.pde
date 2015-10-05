@@ -36,8 +36,7 @@ class Seeker extends Vehicle {
 
     //PShape initialization
     //draw the seeker "pointing" toward 0 degrees
-    body = createShape(TRIANGLE, 0, 0, -10, -10, 10, -10);
-    println("created seeker");
+    body = createShape(TRIANGLE,  0, 0, 10, -30, -10, -30);
   }
 
 
@@ -54,8 +53,8 @@ class Seeker extends Vehicle {
       
     //get the steering force returned from calling seek
     //This seeker's target (for now) is the mouse
-    PVector seekingForce = seek(new PVector(mouseX, mouseY));
-println("seeking force = ", seekingForce);
+    PVector seekingForce = seek(new PVector(mouseX, mouseY)); //<>//
+
     //add the above seeking force to this overall steering force
     steeringForce.add(seekingForce);
 
@@ -80,14 +79,12 @@ println("seeking force = ", seekingForce);
     float angle = velocity.heading();   
 
     //draw this vehicle's body PShape using proper translation and rotation
-    //pushMatrix();
-    //translate(position.x, position.y);
-    //rotate(angle);
-    //shape(body, 0, 0);
-    //popMatrix();
-    //shape(body);
-    rect(position.x, position.y, 30, 20);
-    println(position.x, position.y);
+    pushMatrix();
+    translate(position.x, position.y);
+    rotate(angle-HALF_PI);
+    shape(body, 0, 0);
+    popMatrix();
+    shape(body);
   }
   
   //--------------------------------

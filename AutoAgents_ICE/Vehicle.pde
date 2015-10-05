@@ -33,6 +33,7 @@ abstract class Vehicle {
     radius = r;
     maxSpeed = ms;
     maxForce = mf;
+    mass = 1; //Mass is needed for applyForces but the constructor we were given doesn't include it, so I'll just have everyone have the same mass for now
   }
 
   //--------------------------------
@@ -52,9 +53,7 @@ abstract class Vehicle {
   //         Zeroes-out acceleration 
   void update() {
     //calculate steering forces by calling calcSteeringForces()
-    println("calc steer");
-    calcSteeringForces();
-    println("finished calc steer");
+    calcSteeringForces(); //<>//
     //add acceleration to velocity, limit the velocity, and add velocity to position
     velocity.add(acceleration);
     velocity.limit(maxSpeed);
@@ -83,11 +82,7 @@ abstract class Vehicle {
   //Method: seek(target's position vector)
   //Purpose: Calculates the steering force toward a target's position
   PVector seek(PVector target){
-      println("target", target, "position", position);
     PVector desired = PVector.sub(target, position); //<>//
-    
-    println("desired", desired);
-    println("velocity", velocity);
     desired.setMag(maxSpeed);
     return PVector.sub(desired, velocity);
 
