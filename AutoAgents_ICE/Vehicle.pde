@@ -60,7 +60,8 @@ abstract class Vehicle {
     position.add(velocity);
     
     //calculate forward and right vectors
-    forward = velocity.normalize();
+    forward = velocity.copy();
+    forward.normalize();
     right.set(forward.y, -forward.x);
     //reset acceleration
     acceleration.set(0, 0);
@@ -83,6 +84,7 @@ abstract class Vehicle {
   //Purpose: Calculates the steering force toward a target's position
   PVector seek(PVector target){
     PVector desired = PVector.sub(target, position); //<>//
+    desired.normalize();
     desired.setMag(maxSpeed);
     return PVector.sub(desired, velocity);
 
