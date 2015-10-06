@@ -16,7 +16,7 @@ abstract class Vehicle {
   PVector forward, right;
 
   //floats to describe vehicle movement and size
-  float maxSpeed, maxForce, radius, mass;
+  float maxSpeed, maxForce, radius, mass, safeDistance;
 
 
   //--------------------------------
@@ -33,6 +33,7 @@ abstract class Vehicle {
     radius = r;
     maxSpeed = ms;
     maxForce = mf;
+    safeDistance = 40;
     mass = 1; //Mass is needed for applyForces but the constructor we were given doesn't include it, so I'll just have everyone have the same mass for now
   }
 
@@ -85,9 +86,35 @@ abstract class Vehicle {
   PVector seek(PVector target){
     PVector desired = PVector.sub(target, position); //<>//
     desired.normalize();
-    desired.setMag(maxSpeed);
+    desired.mult(maxSpeed);
     return PVector.sub(desired, velocity);
 
   }
   
+  //Method: obstacleAvoidance()
+  //Purpose: Calculates the steering force to avoid the given obstacle
+  PVector obstacleAvoidance(Obstacle o){
+    PVector desired;
+    PVector vecToC = PVector.sub(o.position, this.position);
+    
+    //Check for any conditions that make it unnecessary to worry about the obstacle
+    //Reynold's test for non-intersection
+    if(vecToC.magSq() - pow(o.radius + this.radius, 2) > pow(safeDistance, 2)) return new PVector(0, 0);
+    
+    //If obstacle is behind, no need to avoid it
+    if(PVector.dot(vecToC, this.forward) < 0) return new PVector(0, 0); 
+    
+    //See if it can squeeze through
+    float dotR = PVector.dot(vecToC, right);
+    if(this.radius + o.radius < dotR) return new PVector(0, 0);
+    
+    //Can't squeeze, collision is imminent. Avoid the obstacle
+    if(dotR>0) //If the target is to the right, steer to the left
+      desired = PVector.mult(PVector.mult(this.right, -1), maxSpeed);
+    else //Steer to the right
+      desired = PVector.mult(this.right, maxSpeed);
+    
+    PVector steer = PVector.sub(desired, velocity); //Transform the desired velocity into a steering force
+    return PVector.mult(steer, this.safeDistance/vecToC.mag()); //Scale it by distance to the obstacle
+  }
 }

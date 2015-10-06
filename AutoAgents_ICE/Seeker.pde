@@ -49,14 +49,16 @@ class Seeker extends Vehicle {
   //         Calculates all of the resulting steering forces
   //         Applies each steering force to the acceleration
   //         Resets the steering force
-  void calcSteeringForces() {
-      
+  void calcSteeringForces() {  
     //get the steering force returned from calling seek
     //This seeker's target (for now) is the mouse
     PVector seekingForce = seek(new PVector(mouseX, mouseY)); //<>//
+    PVector avoidanceForce = new PVector(0, 0);
+    for(int i=0; i<obstacles.size(); i++) avoidanceForce.add(obstacleAvoidance(obstacles.get(i)));
 
     //add the above seeking force to this overall steering force
     steeringForce.add(seekingForce);
+    steeringForce.add(avoidanceForce);
 
     //limit this seeker's steering force to a maximum force
     steeringForce.limit(maxForce);
