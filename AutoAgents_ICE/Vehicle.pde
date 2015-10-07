@@ -106,7 +106,7 @@ abstract class Vehicle {
     
     //See if it can squeeze through
     float dotR = PVector.dot(vecToC, right);
-    if(this.radius + o.radius < dotR) return new PVector(0, 0);
+    if(this.radius + o.radius < abs(dotR)) return new PVector(0, 0);
     
     //Can't squeeze, collision is imminent. Avoid the obstacle
     if(dotR>0) //If the target is to the right, steer to the left
