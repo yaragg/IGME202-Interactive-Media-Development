@@ -50,15 +50,33 @@ class Zombie extends Vehicle {
   //         Applies each steering force to the acceleration
   //         Resets the steering force
   void calcSteeringForces() {  
-    //get the steering force returned from calling seek
-    //This Zombie's target (for now) is the mouse
-    PVector seekingForce = seek(new PVector(mouseX, mouseY));
+    PVector seekingForce = new PVector(0, 0);
     PVector avoidanceForce = new PVector(0, 0);
-    for(int i=0; i<trees.size(); i++) avoidanceForce.add(obstacleAvoidance(trees.get(i)));
+    
+    //Find closest human and seek it
+    target = null;
+    if(humans.size()>0) 
+    {
+      Human human = humans.get(0);
+      for(int i=1; i<humans.size(); i++)
+      {
+        if(PVector.sub(humans.get(i).position, this.position).magSq() < PVector.sub(human.position, this.position).magSq()) //There is a closer human
+          human = humans.get(i);
+      }
+      target = human.position;
+      seekingForce = seek(target);
+    }
+    
+    //Avoid obstacles
+    for(int i=0; i<trees.size(); i++) avoidanceForce.add(avoid(trees.get(i)));
+    
+    //Stay within boundaries
+    PVector boundaryForce = stayWithinBoundaries();
 
     //add the above seeking force to this overall steering force
     steeringForce.add(seekingForce);
     steeringForce.add(PVector.mult(avoidanceForce, 1.5));
+    steeringForce.add(boundaryForce);
 
     //limit this Zombie's steering force to a maximum force
     steeringForce.limit(maxForce);
@@ -77,13 +95,26 @@ class Zombie extends Vehicle {
   //         All Vehicles must implement display
   void display() {
       
-ellipse(position.x, position.y, radius/2, radius/2);
+    ellipse(position.x, position.y, radius/2, radius/2);
   }
   
   //--------------------------------
   //Class methods
   //--------------------------------
   
-  
+  void update() //Uses the Vehicle's update method, but also needs to check for collision with humans
+  {
+    super.update();
+    
+    //Checks for collision
+    for(int i=0; i<humans.size(); i++)
+    {
+      if(hasCollided(humans.get(i))) //Remove human and spawn a zombie at the same location
+      {
+        zombies.add(new Zombie(humans.get(i).position.x, humans.get(i).position.y, vehicleRadius, zombieMs, zombieMf));
+        humans.remove(i);
+      }
+    }
+  }
   
 }

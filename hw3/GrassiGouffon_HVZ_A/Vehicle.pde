@@ -76,6 +76,37 @@ abstract class Vehicle {
     acceleration.add(PVector.div(force, mass));
   }
   
+  //Method: hasCollided(other vehicle)
+  //Purpose: Checks if object has collided with another vehicle
+  boolean hasCollided(Vehicle v) {
+    if(PVector.sub(v.position, this.position).magSq() <= pow(v.radius/2, 2)+pow(this.radius/2, 2))
+      return true;
+    else return false;
+  }
+  
+  //Method: hasCollided(Obstacle o)
+  //Purpose: Pretty much the same thing as the previous method except it's for Ostacles
+  boolean hasCollided(Obstacle o) {
+    if(PVector.sub(o.position, this.position).magSq() <= pow(o.radius/2, 2)+pow(this.radius/2, 2))
+      return true;
+    else return false;
+  }
+  
+  //Method: drawMovementVectors()
+  //Purpose: Draws forward and right vectors for debug
+  void drawMovementVectors()
+  {
+    stroke(#00FF00);
+    PVector f = forward.copy().normalize();
+    f.mult(width/13);
+    line(position.x, position.y, f.x+position.x, f.y+position.y);
+    
+    stroke(#0000FF);
+    PVector r = right.copy().normalize();
+    r.mult(width/13);
+    line(position.x, position.y, r.x+position.x, r.y+position.y);
+  }
+  
   
   //--------------------------------
   //Steering Methods
@@ -101,9 +132,17 @@ abstract class Vehicle {
 
   }
   
-  //Method: obstacleAvoidance()
+  //Method: stayWithinBoundaries()
+  //Purpose: Returns the corresponding steering force to go back to the center if the subject is too far
+  PVector stayWithinBoundaries()
+  {
+    if(PVector.sub(this.position, new PVector(width/2, height/2)).magSq() > pow(height/2-2*this.radius, 2)) return seek(new PVector(width/2, height/2));
+    else return new PVector(0, 0);
+  }
+  
+  //Method: avoid(obstacle to be avoided)
   //Purpose: Calculates the steering force to avoid the given obstacle
-  PVector obstacleAvoidance(Obstacle o){
+  PVector avoid(Obstacle o){
     PVector desired;
     PVector vecToC = PVector.sub(o.position, this.position);
     

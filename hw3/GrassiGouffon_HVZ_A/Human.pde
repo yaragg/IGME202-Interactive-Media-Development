@@ -20,6 +20,9 @@ class Human extends Vehicle {
   //overall steering force for this Human accumulates the steering forces
   //  of which this will be applied to the vehicle's acceleration
   PVector steeringForce;
+  
+  //Zone of comfort for zombie proximity
+  float fleeingDistance = width/9;
 
 
   //---------------------------------------
@@ -50,23 +53,29 @@ class Human extends Vehicle {
   //         Applies each steering force to the acceleration
   //         Resets the steering force
   void calcSteeringForces() {  
-    //get the steering force returned from calling seek
-    //This Human's target (for now) is the mouse
     PVector fleeingForce = new PVector(0, 0);
     
-    for(int i=0; i<zombies.size(); i++)
+    //Find the closest zombie and flee from it
+    Zombie zombie = zombies.get(0);
+    for(int i=1; i<zombies.size(); i++)
     {
-      if(PVector.sub(zombies.get(i).position, this.position).magSq() < pow(safeDistance, 2))
-        fleeingForce.add(flee(zombies.get(i).position));
+      if(PVector.sub(zombies.get(i).position, this.position).magSq() < PVector.sub(zombie.position, this.position).magSq()) //There is a closer zombie
+        zombie = zombies.get(i);
     }
+    if(PVector.sub(zombie.position, this.position).magSq() < pow(fleeingDistance, 2)) fleeingForce = flee(zombie.position); //If the closest zombie is too close for comfort, flee
     
-    
+    //Avoid obstacles
     PVector avoidanceForce = new PVector(0, 0);
-    for(int i=0; i<trees.size(); i++) avoidanceForce.add(obstacleAvoidance(trees.get(i)));
+    for(int i=0; i<trees.size(); i++) avoidanceForce.add(avoid(trees.get(i)));
+    
+    //Stay within boundaries
+    PVector boundaryForce = stayWithinBoundaries();
 
     //add the above seeking force to this overall steering force
+    //steeringForce.add(PVector.mult(fleeingForce, 1.4));
     steeringForce.add(fleeingForce);
     steeringForce.add(PVector.mult(avoidanceForce, 1.5));
+    steeringForce.add(boundaryForce);
 
     //limit this Human's steering force to a maximum force
     steeringForce.limit(maxForce);
