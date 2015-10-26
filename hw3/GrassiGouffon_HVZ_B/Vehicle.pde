@@ -21,7 +21,7 @@ abstract class Vehicle {
   //How far to look ahead when estimating future positions in pursue and evade
   float estimateTime = 15;
   
-  float pTime;
+  float pWanderAngle; //Previous wander angle
 
 
   //--------------------------------
@@ -40,7 +40,6 @@ abstract class Vehicle {
     maxForce = mf;
     safeDistance = 40;
     mass = 1; //Mass is needed for applyForces but the constructor we were given doesn't include it, so I'll just have everyone have the same mass for now
-    pTime = random(0, 1000);
   }
 
   //--------------------------------
@@ -205,16 +204,9 @@ abstract class Vehicle {
   //Purpose: Calculate a steering force to a random point
   PVector wander()
   {
-    //PVector destination = new PVector(noise(pTime), noise(pTime+100));
-    //pTime += 0.005;
-    //println("Wandering");
-    //return seek(destination);
-    PVector desired = new PVector(noise(pTime), noise(pTime+100));
-    pTime += 0.005;
-        desired.normalize();
-    desired.mult(maxSpeed);
-    return PVector.sub(desired, velocity);
-
-    
+    PVector destination = PVector.fromAngle(pWanderAngle); //Create a unit vector with the previous wandering angle
+    destination.setMag(50); //Constrain the vector to a circle of radius equal to 40
+    pWanderAngle += random(-50, 50); //Change the angle for the next time
+    return seek(PVector.add(position, destination));
   }
 }
