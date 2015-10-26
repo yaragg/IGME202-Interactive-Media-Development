@@ -85,7 +85,7 @@ abstract class Vehicle {
   //Method: hasCollided(other vehicle)
   //Purpose: Checks if object has collided with another vehicle
   boolean hasCollided(Vehicle v) {
-    if(PVector.sub(v.position, this.position).magSq() <= pow(v.radius/2, 2)+pow(this.radius/2, 2))
+    if(PVector.sub(v.position, this.position).magSq() <= pow(v.radius/4+this.radius/4, 2))
       return true;
     else return false;
   }
@@ -93,7 +93,7 @@ abstract class Vehicle {
   //Method: hasCollided(Obstacle o)
   //Purpose: Pretty much the same thing as the previous method except it's for Ostacles
   boolean hasCollided(Obstacle o) {
-    if(PVector.sub(o.position, this.position).magSq() <= pow(o.radius/2, 2)+pow(this.radius/2, 2))
+    if(PVector.sub(o.position, this.position).magSq() <= pow(o.radius/2+this.radius/2, 2))
       return true;
     else return false;
   }
@@ -131,6 +131,7 @@ abstract class Vehicle {
   //Method: pursue(target vehicle)
   //Purpose: Calculates the steering force toward a target's estimated future position
   PVector pursue(Vehicle v){
+    estimateTime = PVector.sub(v.position, position).mag()/maxSpeed;
     PVector estimated = PVector.add(v.position, PVector.mult(v.velocity, estimateTime));
     if(debug)
     {
@@ -154,6 +155,7 @@ abstract class Vehicle {
   //Method: evade(target vehicle)
   //Purpose: Calculates the steering force away from a target's estimated future position
   PVector evade(Vehicle v){
+    estimateTime = PVector.sub(v.position, position).mag()/maxSpeed;
     PVector estimated = PVector.add(v.position, PVector.mult(v.velocity, estimateTime));
     if(debug)
     {

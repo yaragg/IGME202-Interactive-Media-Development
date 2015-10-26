@@ -70,8 +70,8 @@ class Human extends Vehicle {
     PVector boundaryForce = stayWithinBoundaries();
 
     //add the above seeking force to this overall steering force
-    steeringForce.add(PVector.mult(fleeingForce, 1.4));
-    steeringForce.add(fleeingForce);
+    steeringForce.add(PVector.mult(fleeingForce, 1.5));
+    //steeringForce.add(fleeingForce);
     steeringForce.add(wanderingForce);
     //steeringForce.add(PVector.mult(avoidanceForce, 1.5));
     steeringForce.add(avoidanceForce);
