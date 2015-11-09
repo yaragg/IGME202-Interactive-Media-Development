@@ -9,9 +9,11 @@ int initialHumans = 5;
 float zombieMs = 2.5, zombieMf = 0.05;
 float humanMs = 3, humanMf = 0.3;
 
-float vehicleRadius = 40; //Generic radius for humans and zombies for now
+float vehicleRadius = 60; //Generic radius for humans and zombies for now
 
 boolean debug = false;
+
+PImage zImage, hImage, tImage;
 
 void setup() {
   size(700, 700);
@@ -20,6 +22,10 @@ void setup() {
   trees = new ArrayList<Obstacle>();
   humans = new ArrayList<Human>();
   zombies = new ArrayList<Zombie>();
+  
+  zImage = loadImage("zombie.png");
+  hImage = loadImage("human.png");
+  tImage = loadImage("tree.png");
   
   for(int i=0; i<initialHumans; i++) addHuman();
   
@@ -31,7 +37,7 @@ void setup() {
   {
     do //Keep generating a new tree until it lands on a free spot
     {
-      o = new Obstacle(60*random(1, 3)); //Randomize tree position
+      o = new Obstacle(60*random(2, 4)); //Randomize tree position
     }
     while(isThereAnythingAt(o));
     trees.add(o);
@@ -39,7 +45,7 @@ void setup() {
 }
 
 void draw() {
-  background(255);
+  background(#A4E069);
   
   if(debug) drawDebug();
   
@@ -70,7 +76,7 @@ void draw() {
   
   fill(#000000);
   textSize(16);
-  text("Press 'd' for debug", 10, 20);
+  text("Press 'd' for debug, 'h' to add human, 'z' to add zombie", 10, 20);
 
 }
 

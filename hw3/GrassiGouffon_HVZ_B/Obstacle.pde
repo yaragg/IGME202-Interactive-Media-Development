@@ -14,7 +14,7 @@ class Obstacle
   
   void display()
   {
-    ellipse(position.x, position.y, radius/2, radius/2);
+    image(tImage, position.x, position.y, radius/2, radius/2);
   }
   
 }

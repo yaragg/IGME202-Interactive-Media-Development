@@ -95,8 +95,7 @@ class Zombie extends Vehicle {
   //         Draws this Zombie as a triangle pointing toward 0 degreed
   //         All Vehicles must implement display
   void display() {
-      
-    ellipse(position.x, position.y, radius/2, radius/2);
+    image(zImage, position.x, position.y, radius/2, radius/2);
   }
   
   //--------------------------------
